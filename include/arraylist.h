@@ -18,10 +18,11 @@
 #ifndef _ARRAYLIST_H
 #define _ARRAYLIST_H
 
-#define ARRAYLIST_INITIAL_SIZE 10
-#define ERRSTRING_SIZE         128
+#define ARRAYLIST_INITIAL_SIZE	10
+#define ERRSTRING_SIZE		128
 
-#define AL_MEM_ERR "not enough memory to allocate array"
+#define AL_MEM_ERR	"not enough memory to allocate array"
+#define AL_RMEM_ERR	"not enough memory to allocate new array for resize"
 
 static char al_error[ERRSTRING_SIZE];
 
@@ -54,7 +55,7 @@ const char *arraylist_error(void)
 		assert(l);						\
 		assert(al_error[0] == '\0');				\
 									\
-		l->data = calloc(ARRAYLIST_INITIAL_SIZE, sizeof(type)); \
+		l->data = calloc(ARRAYLIST_INITIAL_SIZE, sizeof(type));	\
 		if(!l->data) {						\
 			strncpy(al_error, AL_MEM_ERR, ERRSTRING_SIZE);	\
 			return 0;					\
@@ -74,7 +75,44 @@ const char *arraylist_error(void)
 		l->data = NULL;						\
 		l->size = 0;						\
 		l->current = 0;						\
-	}								
-
+	}								\
+									\
+	static char resize_ ## type ## _arraylist(type ## _arraylist_t	\
+			*l)						\
+	{								\
+		type *new_array;					\
+		unsigned new_size, i;					\
+									\
+		assert(l);						\
+		assert(al_error[0] == '\0');				\
+									\
+		if(l->current < l->size)				\
+			return 1;					\
+		new_size = l->size * 2;					\
+		new_array = calloc(ARRAYLIST_INITIAL_SIZE,		\
+				sizeof(type));				\
+		if(!new_array) {					\
+			strncpy(al_error, AL_RMEM_ERR, ERRSTRING_SIZE);	\
+			return 0;					\
+		}							\
+		for(i = 0; i < l->current; l++)				\
+			new_array[i] = l->data[i];			\
+		free(l->data);						\
+		l->data = new_array;					\
+		l->size = new_size;					\
+		return 1;						\
+	}								\
+									\
+	static char insert_ ## type ## _arraylist(type ## _arraylist_t	\
+			*l, type e)					\
+	{								\
+		assert(l);						\
+		assert(al_error[0] == '\0');				\
+									\
+		if(!resize_ ## type ## _arraylist(l))			\
+			return 0;					\
+		l->data[l->current++] = e;				\
+		return 1;						\
+	}
 
 #endif  /* _ARRAYLIST_H */

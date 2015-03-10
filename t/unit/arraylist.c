@@ -11,26 +11,51 @@ initialize_arraylist_type(int);
 
 static char arraylist_create(void)
 {
-       int_arraylist_t l;
+	int_arraylist_t l;
 
-       printf("  testing arraylist creation\n");
-       printf("    creating standard arraylist of type int..... ");
-       if(!new_int_arraylist(&l)) {
-           printf("fail\n");
-           printf("arraylist error: %s\n", arraylist_error());
-           return 0;
-       }
-       printf("pass\n");
+	printf("  testing arraylist creation\n");
+	printf("    creating standard arraylist of type int..... ");
+	if(!new_int_arraylist(&l)) {
+		printf("fail\n");
+		printf("arraylist error: %s\n", arraylist_error());
+		return 0;
+	}
+	free_int_arraylist(&l);
+	printf("pass\n");
 
-       printf("  all arraylist creation tests passed\n");
-       return 1;
+	printf("  all arraylist creation tests passed\n");
+	return 1;
+}
+
+static char arraylist_insert(void)
+{
+	int_arraylist_t l;
+
+	printf("  testing arraylist insertion\n");
+	if(!new_int_arraylist(&l)) {
+		printf("could not create arraylist for test\n");
+		printf("arraylist error: %s\n", arraylist_error());
+		return 0;
+	}
+	printf("    inserting element 1......................... ");
+	if(!insert_int_arraylist(&l, 1)) {
+		printf("fail\n");
+		printf("arraylist error: %s\n", arraylist_error());
+		return 0;
+	}
+	printf("pass\n");
+
+	free_int_arraylist(&l);
+	printf("  all arraylist insertion tests passed\n");
+	return 1;
 }
 
 int main(void)
 {
-    printf("starting arraylist unit tests\n");
-    if(!arraylist_create()) return 1;
-    printf("arraylist unit tests complete\n");
+	printf("starting arraylist unit tests\n");
+	if(!arraylist_create()) return 1;
+	if(!arraylist_insert()) return 1;
+	printf("arraylist unit tests complete\n");
 
-    return 0;
+	return 0;
 }
