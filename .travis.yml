@@ -1,3 +1,4 @@
+sudo: false
 install: make
 language: c
 compiler: gcc
