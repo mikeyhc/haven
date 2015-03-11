@@ -113,6 +113,18 @@ const char *arraylist_error(void)
 			return 0;					\
 		l->data[l->current++] = e;				\
 		return 1;						\
+	}								\
+									\
+	static char get_ ## type ## _arraylist(type ## _arraylist_t *l,	\
+			unsigned idx, type *e)				\
+	{								\
+		assert(l);						\
+		assert(al_error[0] == '\0');				\
+									\
+		if(idx > l->current)					\
+			return 0;					\
+		*e = l->data[idx];					\
+		return 1;						\
 	}
 
 #endif  /* _ARRAYLIST_H */

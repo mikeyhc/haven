@@ -30,6 +30,7 @@ static char arraylist_create(void)
 static char arraylist_insert(void)
 {
 	int_arraylist_t l;
+	int t;
 
 	printf("  testing arraylist insertion\n");
 	if(!new_int_arraylist(&l)) {
@@ -37,10 +38,24 @@ static char arraylist_insert(void)
 		printf("arraylist error: %s\n", arraylist_error());
 		return 0;
 	}
+
 	printf("    inserting element 1......................... ");
 	if(!insert_int_arraylist(&l, 1)) {
 		printf("fail\n");
 		printf("arraylist error: %s\n", arraylist_error());
+		return 0;
+	}
+	printf("pass\n");
+	
+	printf("    checking element 1 inserted................. ");
+	if(!get_int_arraylist(&l, 0, &t)) {
+		printf("fail\n");
+		printf("element not in correct position\n");
+		return 0;
+	}
+	if(t != 1) {
+		printf("fail\n");
+		printf("incorrect element in position\n");
 		return 0;
 	}
 	printf("pass\n");
