@@ -13,7 +13,7 @@
 
 #include <assert.h>	/* assert */
 #include <stdlib.h>	/* calloc, free */
-#include <string.h>	/* strncpy */
+#include <string.h>	/* strncpy, memcpy */
 
 #ifndef _ARRAYLIST_H
 #define _ARRAYLIST_H
@@ -81,7 +81,7 @@ const char *arraylist_error(void)
 			*l)						\
 	{								\
 		type *new_array;					\
-		unsigned new_size, i;					\
+		unsigned new_size;					\
 									\
 		assert(l);						\
 		assert(al_error[0] == '\0');				\
@@ -94,8 +94,7 @@ const char *arraylist_error(void)
 			strncpy(al_error, AL_RMEM_ERR, ERRSTRING_SIZE);	\
 			return 0;					\
 		}							\
-		for(i = 0; i < l->current; i++)				\
-			new_array[i] = l->data[i];			\
+		memcpy(new_array, l->data, l->size * sizeof(type));	\
 		free(l->data);						\
 		l->data = new_array;					\
 		l->size = new_size;					\
