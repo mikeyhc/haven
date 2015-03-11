@@ -33,8 +33,7 @@ test-debug-files: $(UNIT_TEST_OUT_DIR)/arraylist-debug
 $(UNIT_TEST_OUT_DIR)/arraylist-debug: $(UNIT_TEST_DIR)/arraylist.c \
 	                                  $(INCLUDE_DIR)/arraylist.h
 	$(QUIET)$(MKDIR) $(UNIT_TEST_OUT_DIR)
-	$(GCC) $(CFLAGS) -E -o $(patsubst %.c,%.i,$<) $<
-	$(SED) -i 's/^#.*//' $(patsubst %.c,%.i,$<)
+	$(GCC) $(CFLAGS) -E -P -o $(patsubst %.c,%.i,$<) $<
 	$(SED) -i 's/\(;\|{\|}\)/\1\n/g' $(patsubst %.c,%.i,$<)
 	$(GCC) $(DEBUG) -o $@ $(patsubst %c,%i,$<)
 	
