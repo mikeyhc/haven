@@ -89,13 +89,12 @@ const char *arraylist_error(void)
 		if(l->current < l->size)				\
 			return 1;					\
 		new_size = l->size * 2;					\
-		new_array = calloc(ARRAYLIST_INITIAL_SIZE,		\
-				sizeof(type));				\
+		new_array = calloc(new_size, sizeof(type));		\
 		if(!new_array) {					\
 			strncpy(al_error, AL_RMEM_ERR, ERRSTRING_SIZE);	\
 			return 0;					\
 		}							\
-		for(i = 0; i < l->current; l++)				\
+		for(i = 0; i < l->current; i++)				\
 			new_array[i] = l->data[i];			\
 		free(l->data);						\
 		l->data = new_array;					\

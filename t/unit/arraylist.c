@@ -7,7 +7,7 @@
 #include <arraylist.h>
 #include <stdio.h>
 
-initialize_arraylist_type(int);
+initialize_arraylist_type(int)
 
 static char arraylist_create(void)
 {
@@ -30,7 +30,7 @@ static char arraylist_create(void)
 static char arraylist_insert(void)
 {
 	int_arraylist_t l;
-	int t;
+	int t, i;
 
 	printf("  testing arraylist insertion\n");
 	if(!new_int_arraylist(&l)) {
@@ -57,6 +57,31 @@ static char arraylist_insert(void)
 		printf("fail\n");
 		printf("incorrect element in position\n");
 		return 0;
+	}
+	printf("pass\n");
+
+	printf("    inserting 10 elements to test resize........ ");
+	for(i = 0; i < 10; i++) 
+		if(!insert_int_arraylist(&l, i)) {
+			printf("fail\n");
+			printf("failed to insert %d\n", i);
+			printf("arraylist_error: %s\n", arraylist_error());
+			return 0;
+		}
+	printf("pass\n");
+
+	printf("    checking element positions.................. ");
+	for(i = 0; i < 10; i++) {
+		if(!get_int_arraylist(&l, i + 1, &t)) {
+			printf("fail\n");
+			printf("element not in correct position\n");
+			return 0;
+		}
+		if(t != i) {
+			printf("failed\n");
+			printf("element not in correct position\n");
+			return 0;
+		}
 	}
 	printf("pass\n");
 
