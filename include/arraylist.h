@@ -11,18 +11,20 @@
  * author: mikeyhc <mikeyhc@atmosia.net>
  */
 
+#ifndef _ARRAYLIST_H
+#define _ARRAYLIST_H
+
 #include <assert.h>	/* assert */
 #include <stdlib.h>	/* calloc, free */
 #include <string.h>	/* strncpy, memcpy */
-
-#ifndef _ARRAYLIST_H
-#define _ARRAYLIST_H
 
 #define ARRAYLIST_INITIAL_SIZE	10
 #define ERRSTRING_SIZE		128
 
 #define AL_MEM_ERR	"not enough memory to allocate array"
 #define AL_RMEM_ERR	"not enough memory to allocate new array for resize"
+
+#define UNUSED __attribute__ ((unused))
 
 static char al_error[ERRSTRING_SIZE];
 
@@ -49,6 +51,13 @@ const char *arraylist_error(void)
 	};								\
 									\
 	typedef struct type ## _arraylist type ## _arraylist_t;		\
+									\
+	static char new_ ## type ## _arraylist(type ## _arraylist_t*)	\
+			UNUSED;						\
+	static void free_ ## type ## _arraylist(type ## _arraylist_t*)	\
+			UNUSED;						\
+	static char get_ ## type ## _arraylist(type ## _arraylist_t*,	\
+			unsigned, type *) UNUSED;			\
 									\
 	static char new_ ## type ## _arraylist(type ## _arraylist_t *l)	\
 	{								\
