@@ -1,4 +1,7 @@
-sudo: false
+before_install:
+    - sudo add-apt-repository "deb http://us.archive.ubuntu.com/ubuntu/ saucy universe"
+    - sudo apt-get update -qq
+    - sudo apt-get install -y libsdl2-dev
 install: make
 language: c
 compiler: gcc
