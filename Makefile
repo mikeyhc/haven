@@ -13,6 +13,7 @@ RM    := rm -f
 RMR   := $(RM) -r
 
 BUILD_DIR         := build
+BIN_DIR           := $(BUILD_DIR)/bin
 INCLUDE_DIR       := include
 OBJ_DIR           := $(BUILD_DIR)/obj
 SRC_DIR           := src
@@ -24,10 +25,27 @@ UNIT_TEST_OUT_DIR := $(BUILD_DIR)/$(UNIT_TEST_DIR)
 VPATH             := $(SRC_DIR)
 
 DEBUG  := -g
-CFLAGS := -I$(INCLUDE_DIR) $(DEBUG) -Wall -Wextra -pedantic
+CFLAGS := -I$(INCLUDE_DIR) $(DEBUG) -Wall -Wextra -pedantic -I/usr/include/SDL2
+LDLIBS := -L/usr/lib64/SDL2 -lSDL2 -lSDL2_image
 QUIET  ?= @
 
-all: 
+all: $(BIN_DIR)/haven
+
+$(BIN_DIR)/haven: $(OBJ_DIR)/gui.o $(OBJ_DIR)/game.o $(OBJ_DIR)/main.o 
+	$(QUIET)$(MKDIR) $(BIN_DIR)
+	$(GCC) $(CFLAGS) $(LDLIBS) -o $@ $^
+
+$(OBJ_DIR)/main.o: main.c $(INCLUDE_DIR)/gui.h $(INCLUDE_DIR)/game.h
+	$(QUIET)$(MKDIR) $(OBJ_DIR)
+	$(GCC) $(CFLAGS) -c -o $@ $<
+
+$(OBJ_DIR)/gui.o: gui.c $(INCLUDE_DIR)/gui.h
+	$(QUIET)$(MKDIR) $(OBJ_DIR)
+	$(GCC) $(CFLAGS) -c -o $@ $<
+
+$(OBJ_DIR)/game.o: game.c $(INCLUDE_DIR)/game.h $(INCLUDE_DIR)/gui.h
+	$(QUIET)$(MKDIR) $(OBJ_DIR)
+	$(GCC) $(CFLAGS) -c -o $@ $<
 
 test: run_arraylist_unit_test run_entity_unit_test
 	$(QUIET)$(ECHO)
