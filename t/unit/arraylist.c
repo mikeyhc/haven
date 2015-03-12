@@ -1,5 +1,5 @@
 /* t/unit/arraylist.c
- * a simple set of unit tests for the arraylist class
+ * a simple set of unit tests for the arraylist datatype
  *
  * author: mikeyhc <mikeyhc@atmosia.net>
  */

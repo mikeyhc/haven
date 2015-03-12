@@ -52,8 +52,13 @@ run_arraylist_unit_test: $(UNIT_TEST_OUT_DIR)/arraylist
 	$(QUIET)$(UNIT_TEST_OUT_DIR)/arraylist
 
 run_entity_unit_test: $(UNIT_TEST_OUT_DIR)/entity
+	$(QUIET)$(ECHO)
+	$(QUIET)$(UNIT_TEST_OUT_DIR)/entity
 
-$(UNIT_TEST_OUT_DIR)/entity: $(OBJ_DIR)/entity.o $(INCLUDE_DIR)/entity.h
+$(UNIT_TEST_OUT_DIR)/entity: $(UNIT_TEST_DIR)/entity.c $(OBJ_DIR)/entity.o \
+	                         $(INCLUDE_DIR)/entity.h
+	$(QUIET)$(MKDIR) $(UNIT_TEST_OUT_DIR)
+	$(QUIET)$(GCC) $(CFLAGS) -o $@ $^
 
 $(OBJ_DIR)/entity.o: entity.c $(INCLUDE_DIR)/entity.h \
 	                 $(INCLUDE_DIR)/arraylist.h
