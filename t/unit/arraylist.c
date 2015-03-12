@@ -17,7 +17,7 @@ static char arraylist_create(void)
 	printf("    creating standard arraylist of type int..... ");
 	if(!new_int_arraylist(&l)) {
 		printf("fail\n");
-		printf("arraylist error: %s\n", arraylist_error());
+		printf("arraylist error: %s\n", get_error_int_arraylist(&l));
 		return 0;
 	}
 	free_int_arraylist(&l);
@@ -35,14 +35,14 @@ static char arraylist_insert(void)
 	printf("  testing arraylist insertion\n");
 	if(!new_int_arraylist(&l)) {
 		printf("could not create arraylist for test\n");
-		printf("arraylist error: %s\n", arraylist_error());
+		printf("arraylist error: %s\n", get_error_int_arraylist(&l));
 		return 0;
 	}
 
 	printf("    inserting element 1......................... ");
 	if(!insert_int_arraylist(&l, 1)) {
 		printf("fail\n");
-		printf("arraylist error: %s\n", arraylist_error());
+		printf("arraylist error: %s\n", get_error_int_arraylist(&l));
 		return 0;
 	}
 	printf("pass\n");
@@ -65,7 +65,8 @@ static char arraylist_insert(void)
 		if(!insert_int_arraylist(&l, i)) {
 			printf("fail\n");
 			printf("failed to insert %d\n", i);
-			printf("arraylist_error: %s\n", arraylist_error());
+			printf("arraylist_error: %s\n", 
+					get_error_int_arraylist(&l));
 			return 0;
 		}
 	printf("pass\n");

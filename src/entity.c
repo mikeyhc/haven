@@ -10,7 +10,6 @@ void entity_initialize(void)
 {
 	/* TODO: read the entity database */
 	current_entity = 0;
-	arraylist_initialize();
 	new_entity_t_arraylist(&recycle_list);
 }
 

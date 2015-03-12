@@ -4,10 +4,6 @@
  * checked at compile time so the function initialize_arraylist_type(TYPE)
  * must be called at the top level before any of the functions.
  *
- * Prior to calling any arraylist functions the function arraylist_initialize()
- * must also be called to set all variables to the correct state, failure to do
- * so can result in unexpected behaviour.
- *
  * author: mikeyhc <mikeyhc@atmosia.net>
  */
 
@@ -16,65 +12,108 @@
 
 #include <assert.h>	/* assert */
 #include <stdlib.h>	/* calloc, free */
-#include <string.h>	/* strncpy, memcpy */
+#include <string.h>	/* strncpy, memcpy, strlen */
 
 #define ARRAYLIST_INITIAL_SIZE	10
-#define ERRSTRING_SIZE		128
 
 #define AL_MEM_ERR	"not enough memory to allocate array"
 #define AL_RMEM_ERR	"not enough memory to allocate new array for resize"
 
+char error_memory_error[] = "not enough memory to allocate error string";
+
 #define UNUSED __attribute__ ((unused))
-
-static char al_error[ERRSTRING_SIZE];
-
-void arraylist_clear_error(void)
-{
-	al_error[0] = '\0';
-} 
-
-void arraylist_initialize(void) 
-{
-	arraylist_clear_error();
-}
-
-const char *arraylist_error(void) 
-{
-	return al_error;
-}
 
 #define initialize_arraylist_type(type)					\
 	struct type ## _arraylist {					\
 		unsigned size;						\
 		unsigned current;					\
+		char *error;						\
 		type *data;						\
 	};								\
 									\
 	typedef struct type ## _arraylist type ## _arraylist_t;		\
 									\
+	static const char *get_error_ ## type ## _arraylist(		\
+			type ## _arraylist_t*) UNUSED;			\
+	static char has_error_ ## type ## _arraylist(			\
+			type ## _arraylist_t*) UNUSED;			\
+	static void set_error_ ## type ## _arraylist(			\
+			type ## _arraylist_t*, const char*) UNUSED;	\
+	static void clear_error_ ## type ## _arraylist(			\
+			type ## _arraylist_t*) UNUSED;			\
+									\
 	static char new_ ## type ## _arraylist(type ## _arraylist_t*)	\
 			UNUSED;						\
 	static void free_ ## type ## _arraylist(type ## _arraylist_t*)	\
 			UNUSED;						\
+	static char insert_ ## type ## _arraylist(type ## _arraylist_t*,\
+			type) UNUSED;					\
 	static char get_ ## type ## _arraylist(type ## _arraylist_t*,	\
 			unsigned, type *) UNUSED;			\
 	static unsigned size_ ## type ## _arraylist(			\
 			type ## _arraylist_t*) UNUSED;			\
 	static char is_empty_ ## type ## _arraylist(			\
 			type ## _arraylist_t*) UNUSED;			\
+	static char push_ ## type ## _arraylist(type ## _arraylist_t*,	\
+			type) UNUSED;					\
+	static char pop_ ## type ## _arraylist(type ## _arraylist_t*,	\
+			type*) UNUSED;					\
+									\
+	static const char *get_error_ ## type ## _arraylist(		\
+			type ## _arraylist_t *l)			\
+	{								\
+		assert(l);						\
+									\
+		return l->error;					\
+	}								\
+									\
+	static char has_error_ ## type ## _arraylist(			\
+			type ## _arraylist_t *l)			\
+	{								\
+		assert(l);						\
+									\
+		return l->error != NULL;				\
+	}								\
+									\
+	static void set_error_ ## type ## _arraylist(			\
+			type ## _arraylist_t *l, const char *err)	\
+	{								\
+		unsigned len;						\
+									\
+		assert(l);						\
+		assert(err);						\
+		assert(!l->error);					\
+									\
+		len = strlen(err);					\
+		l->error = malloc(len + 1);				\
+		if(!l->error)						\
+			l->error = error_memory_error;			\
+		else							\
+			strncpy(l->error, err, len);			\
+	}								\
+									\
+	static void clear_error_ ## type ## _arraylist(			\
+			type ## _arraylist_t *l)			\
+	{								\
+		assert(l);						\
+		assert(l->error);					\
+									\
+		free(l->error);						\
+		l->error = NULL;					\
+	}								\
 									\
 	static char new_ ## type ## _arraylist(type ## _arraylist_t *l)	\
 	{								\
 		assert(l);						\
-		assert(al_error[0] == '\0');				\
 									\
 		l->data = calloc(ARRAYLIST_INITIAL_SIZE, sizeof(type));	\
 		if(!l->data) {						\
-			strncpy(al_error, AL_MEM_ERR, ERRSTRING_SIZE);	\
+			set_error_ ## type ## _arraylist(l, AL_MEM_ERR);\
 			return 0;					\
 		}							\
 		l->size = ARRAYLIST_INITIAL_SIZE;			\
 		l->current = 0;						\
+		l->error = NULL;					\
 		return 1;						\
 	}								\
 									\
@@ -82,7 +121,7 @@ const char *arraylist_error(void)
 			*l)						\
 	{								\
 		assert(l);						\
-		assert(al_error[0] == '\0');				\
+		assert(!has_error_ ## type ## _arraylist(l));		\
 									\
 		free(l->data);						\
 		l->data = NULL;						\
@@ -97,14 +136,15 @@ const char *arraylist_error(void)
 		unsigned new_size;					\
 									\
 		assert(l);						\
-		assert(al_error[0] == '\0');				\
+		assert(!has_error_ ## type ## _arraylist(l));		\
 									\
 		if(l->current < l->size)				\
 			return 1;					\
 		new_size = l->size * 2;					\
 		new_array = calloc(new_size, sizeof(type));		\
 		if(!new_array) {					\
-			strncpy(al_error, AL_RMEM_ERR, ERRSTRING_SIZE);	\
+			set_error_ ## type ## _arraylist(l,		\
+					AL_RMEM_ERR);			\
 			return 0;					\
 		}							\
 		memcpy(new_array, l->data, l->size * sizeof(type));	\
@@ -118,7 +158,7 @@ const char *arraylist_error(void)
 			*l, type e)					\
 	{								\
 		assert(l);						\
-		assert(al_error[0] == '\0');				\
+		assert(!has_error_ ## type ## _arraylist(l));		\
 									\
 		if(!resize_ ## type ## _arraylist(l))			\
 			return 0;					\
@@ -130,7 +170,7 @@ const char *arraylist_error(void)
 			unsigned idx, type *e)				\
 	{								\
 		assert(l);						\
-		assert(al_error[0] == '\0');				\
+		assert(!has_error_ ## type ## _arraylist(l));		\
 									\
 		if(idx > l->current)					\
 			return 0;					\
@@ -142,7 +182,7 @@ const char *arraylist_error(void)
 			*l)						\
 	{								\
 		assert(l);						\
-		assert(al_error[0] == '\0');				\
+		assert(!has_error_ ## type ## _arraylist(l));		\
 									\
 		return l->current;					\
 	}								\
@@ -151,9 +191,28 @@ const char *arraylist_error(void)
 			*l)						\
 	{								\
 		assert(l);						\
-		assert(al_error[0] == '\0');				\
+		assert(!has_error_ ## type ## _arraylist(l));		\
 									\
 		return l->current == 0;					\
+	}								\
+									\
+	static char push_ ## type ## _arraylist(type ## _arraylist_t *l,\
+			type e)						\
+	{								\
+		return insert_ ## type ## _arraylist(l, e);		\
+	}								\
+									\
+	static char pop_ ## type ## _arraylist(type ## _arraylist_t *l, \
+			type *e)					\
+	{								\
+		assert(l);						\
+		assert(!has_error_ ## type ## _arraylist(l));		\
+									\
+		if(l->current == 0)					\
+			return 0;					\
+		*e = l->data[--l->current];				\
+		return 1;						\
 	}
+		
 
 #endif  /* _ARRAYLIST_H */
