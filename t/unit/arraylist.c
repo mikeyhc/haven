@@ -85,6 +85,20 @@ static char arraylist_insert(void)
 	}
 	printf("pass\n");
 
+	printf("    checking size is correct.................... ");
+	if(size_int_arraylist(&l) != 11) {
+		printf("fail\n");
+		return 0;
+	}
+	printf("pass\n");
+
+	printf("    checking is not empty....................... ");
+	if(is_empty_int_arraylist(&l)) {
+		printf("fail\n");
+		return 0;
+	}
+	printf("pass\n");
+
 	free_int_arraylist(&l);
 	printf("  all arraylist insertion tests passed\n");
 	return 1;

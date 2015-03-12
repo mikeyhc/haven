@@ -58,6 +58,10 @@ const char *arraylist_error(void)
 			UNUSED;						\
 	static char get_ ## type ## _arraylist(type ## _arraylist_t*,	\
 			unsigned, type *) UNUSED;			\
+	static unsigned size_ ## type ## _arraylist(			\
+			type ## _arraylist_t*) UNUSED;			\
+	static char is_empty_ ## type ## _arraylist(			\
+			type ## _arraylist_t*) UNUSED;			\
 									\
 	static char new_ ## type ## _arraylist(type ## _arraylist_t *l)	\
 	{								\
@@ -132,6 +136,24 @@ const char *arraylist_error(void)
 			return 0;					\
 		*e = l->data[idx];					\
 		return 1;						\
+	}								\
+									\
+	static unsigned size_ ## type ## _arraylist(type ## _arraylist_t\
+			*l)						\
+	{								\
+		assert(l);						\
+		assert(al_error[0] == '\0');				\
+									\
+		return l->current;					\
+	}								\
+									\
+	static char is_empty_ ## type ## _arraylist(type ## _arraylist_t\
+			*l)						\
+	{								\
+		assert(l);						\
+		assert(al_error[0] == '\0');				\
+									\
+		return l->current == 0;					\
 	}
 
 #endif  /* _ARRAYLIST_H */
