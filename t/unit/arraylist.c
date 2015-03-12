@@ -105,11 +105,118 @@ static char arraylist_insert(void)
 	return 1;
 }
 
+static char arraylist_push_pop(void)
+{
+	int_arraylist_t l;
+	int i, v;
+
+	printf("  testing arraylist push/pop\n");
+	if(!new_int_arraylist(&l)) {
+		printf("could not create arraylist for tests\n");
+		printf("arraylist error: %s\n", get_error_int_arraylist(&l));
+		return 0;
+	}
+
+	printf("    pushing items............................... ");
+	for(i = 0; i < 10; i++) 
+		if(!push_int_arraylist(&l, i)) {
+			printf("fail\n");
+			printf("could not push onto arraylist\n");
+			printf("arraylist error: %s\n", 
+					get_error_int_arraylist(&l));
+			return 0;
+		}
+	printf("pass\n");
+
+	printf("    checking items are in correct positions..... ");
+	for(i = 0; i < 10; i++) {
+		if(!get_int_arraylist(&l, i, &v)) {
+			printf("fail!\n");
+			printf("object failed to insert\n");
+			return 0;
+		}
+		if(v != i) {
+			printf("fail\n");
+			printf("found %d, expected %d\n", v, i);
+			return 0;
+		}
+	}
+	printf("pass\n");
+
+	printf("    testing items pop correctly................. ");
+	for(i = 9; i > 5; i--) {
+		if(!pop_int_arraylist(&l, &v)) {
+			printf("fail\n");
+			printf("could not pop item\n");
+			return 0;
+		}
+		if(i != v) {
+			printf("fail\n");
+			printf("found %d, expected %d\n", v, i);
+			return 0;
+		}
+
+	}
+	printf("pass\n");
+
+	printf("    checking correct size....................... ");
+	if(size_int_arraylist(&l) != 6) {
+		printf("fail\n");
+		printf("got size %d, expected 6\n", size_int_arraylist(&l));
+		return 0;
+	}
+	printf("pass\n");
+
+	printf("    checking items push correctly after pop..... ");
+	for(i = 0; i < 4; i++)
+		if(!push_int_arraylist(&l, i)) {
+			printf("fail\n");
+			printf("failed to push!\n");
+			printf("arraylist error: %s\n", 
+					get_error_int_arraylist(&l));
+			return 0;
+		}
+	printf("pass\n");
+
+	printf("    checking items in the correct position...... ");
+	for(i = 0; i < 6; i++) {
+		if(!get_int_arraylist(&l, i, &v)) {
+			printf("fail\n");
+			printf("object failed to insert\n");
+			return 0;
+		}
+		if(i != v) {
+			printf("fail\n");
+			printf("found %d, expected %d\n", v, i);
+			return 0;
+		}
+	}
+
+	for(i = 0; i < 4; i++) {
+		if(!get_int_arraylist(&l, i + 6, &v)) {
+			printf("fail\n");
+			printf("object failed to insert\n");
+			return 0;
+		}
+		if(i != v) {
+			printf("fail\n");
+			printf("found %d, expected %d\n", v, i);
+			return 0;
+		}
+	}
+	printf("pass\n");
+
+	free_int_arraylist(&l);
+	printf("  all arraylist push/pop tests passed\n");
+	return 1;
+}
+
 int main(void)
 {
 	printf("starting arraylist unit tests\n");
 	if(!arraylist_create()) return 1;
 	if(!arraylist_insert()) return 1;
+	if(!arraylist_push_pop()) return 1;
 	printf("arraylist unit tests complete\n");
 
 	return 0;
