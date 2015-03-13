@@ -1,3 +1,4 @@
+sudo: false
 install: make no-gui
 language: c
 compiler: gcc
