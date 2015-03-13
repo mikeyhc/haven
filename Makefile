@@ -31,6 +31,8 @@ QUIET  ?= @
 
 all: $(BIN_DIR)/haven
 
+no-gui:
+
 $(BIN_DIR)/haven: $(OBJ_DIR)/gui.o $(OBJ_DIR)/game.o $(OBJ_DIR)/main.o 
 	$(QUIET)$(MKDIR) $(BIN_DIR)
 	$(GCC) $(CFLAGS) $(LDLIBS) -o $@ $^
