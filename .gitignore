@@ -30,3 +30,6 @@
 
 # build directories
 build
+
+# debug files
+*.i

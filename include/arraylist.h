@@ -11,6 +11,7 @@
 #define _ARRAYLIST_H
 
 #include <assert.h>	/* assert */
+#include <dynamic.h>	/* UNUSED */
 #include <stdlib.h>	/* calloc, free */
 #include <string.h>	/* strncpy, memcpy, strlen */
 
@@ -20,8 +21,6 @@
 #define AL_RMEM_ERR	"not enough memory to allocate new array for resize"
 
 char error_memory_error[] = "not enough memory to allocate error string";
-
-#define UNUSED __attribute__ ((unused))
 
 #define initialize_arraylist_type(type)					\
 	struct type ## _arraylist {					\
