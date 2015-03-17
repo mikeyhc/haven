@@ -9,7 +9,7 @@ static entity_t current_entity;
 void entity_initialize(void)
 {
 	/* TODO: read the entity database */
-	current_entity = 0;
+	current_entity = 1;
 	new_entity_t_arraylist(&recycle_list);
 }
 

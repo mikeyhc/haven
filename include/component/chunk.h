@@ -9,7 +9,8 @@
 
 #include <assert.h>	/* assert */
 #include <dynamic.h>	/* UNUSED */
-#include <entity.h>	/* entity_t */
+#include <entity.h>	/* entity_t, new_entity */
+#include <string.h>	/* memset */
 
 #define initialize_chunk_size(size)					\
 	struct chunk_component_ ## size {				\
@@ -26,6 +27,8 @@
 			const char*) UNUSED;				\
 	void clear_chunk ##  size ## _error(chunk ## size ## _t*)	\
 			UNUSED;						\
+									\
+	void initialize_chunk ## size (chunk ## size ## _t *) UNUSED;	\
 									\
 	const char *get_chunk ## size ## _error(chunk ## size ## _t *c)	\
 	{								\
@@ -51,7 +54,15 @@
 		assert(c->error);					\
 									\
 		c->error = NULL;					\
-	}								
-
+	}								\
+									\
+	void initialize_chunk ## size (chunk ## size ## _t *c)		\
+	{								\
+		assert(c);						\
+									\
+		memset(c->data, 0, size * size * size);			\
+		c->id = new_entity();					\
+		c->error = NULL;					\
+	}								\
 
 #endif	/* _COMPONENT_CHUNK_H */

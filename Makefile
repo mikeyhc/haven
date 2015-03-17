@@ -63,11 +63,12 @@ $(UNIT_TEST_OUT_DIR)/arraylist-debug: $(UNIT_TEST_DIR)/arraylist.c \
 	$(GCC) $(DEBUG) -o $@ $(patsubst %c,%i,$<)
 
 $(UNIT_TEST_OUT_DIR)/chunk-debug: $(UNIT_TEST_DIR)/chunk.c \
+	                              $(OBJ_DIR)/entity.o $(INCLUDE_DIR)/entity.h \
 								  $(INCLUDE_DIR)/component/chunk.h
 	$(QUIET)$(MKDIR) $(UNIT_TEST_OUT_DIR)
 	$(GCC) $(CFLAGS) -E -P -o $(patsubst %.c,%.i,$<) $<
 	$(SED) -i 's/\(;\|{\|}\)/\1\n/g' $(patsubst %.c,%.i,$<)
-	$(GCC) $(DEBUG) -o $@ $(patsubst %c,%i,$<)
+	$(GCC) $(DEBUG) -o $@ $(patsubst %c,%i,$<) $(OBJ_DIR)/entity.o
 	
 
 $(UNIT_TEST_OUT_DIR)/arraylist: $(UNIT_TEST_DIR)/arraylist.c \
@@ -98,6 +99,8 @@ $(OBJ_DIR)/entity.o: entity.c $(INCLUDE_DIR)/entity.h \
 	$(QUIET)$(GCC) $(CFLAGS) -c -o $@ $<
 
 $(UNIT_TEST_OUT_DIR)/chunk: $(UNIT_TEST_DIR)/chunk.c \
+							$(OBJ_DIR)/entity.o \
+							$(INCLUDE_DIR)/entity.h \
 	                        $(INCLUDE_DIR)/component/chunk.h
 	$(QUIET)$(MKDIR) $(UNIT_TEST_OUT_DIR)
 	$(QUIET)$(GCC) $(CFLAGS) -o $@ $^
