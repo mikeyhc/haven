@@ -26,7 +26,7 @@ VPATH             := $(SRC_DIR)
 
 DEBUG  := -g
 CFLAGS := -I$(INCLUDE_DIR) $(DEBUG) -Wall -Wextra -pedantic -I/usr/include/SDL2
-LDLIBS := -L/usr/lib64/SDL2 -lSDL2 -lSDL2_image
+LDLIBS := -L/usr/lib64/SDL2 -lSDL2 -lSDL2_image -lGL
 QUIET  ?= @
 
 all: $(BIN_DIR)/haven

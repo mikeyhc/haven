@@ -9,11 +9,13 @@
 #include <SDL_image.h>
 #include <stdio.h>
 
+#define PROGRAM_NAME  "Haven Game"
 #define SCREEN_WIDTH  640
 #define SCREEN_HEIGHT 480
 
 static SDL_Window *g_window = NULL;
 static SDL_Renderer *g_renderer = NULL;
+static SDL_GLContext *g_gl_context = NULL;
 
 char initialize_gui(void)
 {
@@ -28,15 +30,32 @@ char initialize_gui(void)
 	if(!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
 		fprintf(stderr, "Warning: Linear texture filtering not "
 				"enabled!\n");
+	if(SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3) < 0
+			|| SDL_GL_SetAttribute(
+				SDL_GL_CONTEXT_MINOR_VERSION, 2) < 0
+			|| SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1) < 0
+			|| SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24) <0) {
+		fprintf(stderr, "Failed to initialize OpenGL: %s\n", 
+				SDL_GetError());
+		return 0;
+	}
 
-	g_window = SDL_CreateWindow("Haven Game", SDL_WINDOWPOS_UNDEFINED,
+	g_window = SDL_CreateWindow(PROGRAM_NAME, SDL_WINDOWPOS_UNDEFINED,
 			SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT,
-			SDL_WINDOW_SHOWN);
+			SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
 	if(!g_window) {
 		fprintf(stderr, "Window could not be created! SDL Error: %s\n",
 				SDL_GetError());
 		return 0;
 	}
+	
+	g_gl_context = SDL_GL_CreateContext(g_window);
+	if(!g_gl_context) {
+		fprintf(stderr, "Could not create SDL GL Context! "
+				"SDL Error: %s\n", SDL_GetError());
+		return 0;
+	}
+	SDL_GL_SetSwapInterval(1);
 
 	g_renderer = SDL_CreateRenderer(g_window, -1, SDL_RENDERER_ACCELERATED
 			| SDL_RENDERER_PRESENTVSYNC);
@@ -71,4 +90,9 @@ void quit_gui(void)
 void render_screen(void)
 {
 	SDL_RenderPresent(g_renderer);
+}
+
+void gl_swap_window(void)
+{
+	SDL_GL_SwapWindow(g_window);
 }

@@ -11,5 +11,6 @@ char initialize_gui(void);
 void quit_gui(void);
 
 void render_screen(void);
+void gl_swap_window(void);
 
 #endif /* _HAVEN_GUI_H */
