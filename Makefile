@@ -1,5 +1,5 @@
 # Makefile
-# Simple makefile for initial development, will be replaced with automake 
+# Simple makefile for initial development, will be replaced with automake
 # script when I find time
 #
 # author: mikeyhc <mikeyhc@atmosia.net>
@@ -26,14 +26,14 @@ VPATH             := $(SRC_DIR)
 
 DEBUG  := -g
 CFLAGS := -I$(INCLUDE_DIR) $(DEBUG) -Wall -Wextra -pedantic -I/usr/include/SDL2
-LDLIBS := -L/usr/lib64/SDL2 -lSDL2 -lSDL2_image -lGL
+LDLIBS := -L/usr/lib64/SDL2 -lSDL2 -lSDL2_image -lGL -lGLEW
 QUIET  ?= @
 
 all: $(BIN_DIR)/haven
 
 no-gui:
 
-$(BIN_DIR)/haven: $(OBJ_DIR)/gui.o $(OBJ_DIR)/game.o $(OBJ_DIR)/main.o 
+$(BIN_DIR)/haven: $(OBJ_DIR)/gui.o $(OBJ_DIR)/game.o $(OBJ_DIR)/main.o
 	$(QUIET)$(MKDIR) $(BIN_DIR)
 	$(GCC) $(CFLAGS) $(LDLIBS) -o $@ $^
 

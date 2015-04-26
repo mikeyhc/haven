@@ -5,8 +5,10 @@
  */
 
 #include <gui.h>
+#include <GL/glew.h>
 #include <SDL.h>
 #include <SDL_image.h>
+#include <shader_utils.h>
 #include <stdio.h>
 
 #define PROGRAM_NAME  "Haven Game"
@@ -14,7 +16,8 @@
 #define SCREEN_HEIGHT 480
 
 static SDL_Window *g_window = NULL;
-static SDL_Renderer *g_renderer = NULL;
+/* TODO: make this static again */
+SDL_Renderer *g_renderer = NULL;
 static SDL_GLContext *g_gl_context = NULL;
 
 char initialize_gui(void)
@@ -35,7 +38,7 @@ char initialize_gui(void)
 				SDL_GL_CONTEXT_MINOR_VERSION, 2) < 0
 			|| SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1) < 0
 			|| SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24) <0) {
-		fprintf(stderr, "Failed to initialize OpenGL: %s\n", 
+		fprintf(stderr, "Failed to initialize OpenGL: %s\n",
 				SDL_GetError());
 		return 0;
 	}

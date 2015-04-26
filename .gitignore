@@ -33,3 +33,6 @@ build
 
 # debug files
 *.i
+
+# editor files
+*.swp
