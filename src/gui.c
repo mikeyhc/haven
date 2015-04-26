@@ -4,16 +4,12 @@
  * author: mikeyhc <mikeyhc@atmosia.net>
  */
 
+#include <global.h>
 #include <gui.h>
 #include <GL/glew.h>
 #include <SDL.h>
 #include <SDL_image.h>
-#include <shader_utils.h>
 #include <stdio.h>
-
-#define PROGRAM_NAME  "Haven Game"
-#define SCREEN_WIDTH  640
-#define SCREEN_HEIGHT 480
 
 static SDL_Window *g_window = NULL;
 /* TODO: make this static again */

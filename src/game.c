@@ -5,60 +5,60 @@
  */
 
 #include <game.h>
+#include <global.h>
 #include <gui.h>
 #include <SDL.h>
-#include <SDL_image.h>
+#include <texture.h>
 #define GL3_PROTOTYPES 1
 
 extern SDL_Renderer *g_renderer;
-
-SDL_Texture *load_texture(char *path)
-{
-	SDL_Texture *new_texture;
-	SDL_Surface *loaded_surface;
-
-	loaded_surface = IMG_Load(path);
-	if(!loaded_surface) {
-		fprintf(stderr, "Unable to load image %s! "
-				"SDL_Image Error: %s\n", path,
-				IMG_GetError());
-		return NULL;
-	}
-
-	new_texture = SDL_CreateTextureFromSurface(g_renderer,
-			loaded_surface);
-	if(!new_texture) {
-		fprintf(stderr, "Unable to create texture from %s! "
-				"SDL Error: %s\n", path, SDL_GetError());
-	}
-
-	SDL_FreeSurface(loaded_surface);
-	return new_texture;
-}
-
 
 int main_loop(void)
 {
 	SDL_Event e;
 	char quit;
-	SDL_Texture *texture;
+	struct texture texture;
+	SDL_Rect sprite_clips[4];
+	int i;
 
-	texture = load_texture("images/tileset.png");
-	if(!texture) {
+	new_texture(&texture);
+	if(!load_from_file(&texture, "images/tileset.png")) {
 		fprintf(stderr, "failed to load texure image\n");
 		return 1;
 	}
 
+	for(i = 0; i < 4; i++) {
+		if(i % 2 == 0)
+			sprite_clips[i].x = 100;
+		else
+			sprite_clips[i].x =   0;
+		if(i > 1)
+			sprite_clips[i].y = 100;
+		else
+			sprite_clips[i].y =   0;
+		sprite_clips[i].w = 100;
+		sprite_clips[i].h = 100;
+	}
+
+	SDL_SetRenderDrawColor(g_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 	quit = 0;
 	while(!quit) {
 		while(SDL_PollEvent(&e))
 			if(e.type == SDL_QUIT) quit = 1;
+
 		SDL_RenderClear(g_renderer);
-		SDL_RenderCopy(g_renderer, texture, NULL, NULL);
+		render(&texture, 0, 0, sprite_clips);
+		render(&texture, SCREEN_WIDTH - sprite_clips[1].w, 0,
+				sprite_clips + 1);
+		render(&texture, 0, SCREEN_HEIGHT - sprite_clips[2].h,
+				sprite_clips + 2);
+		render(&texture, SCREEN_WIDTH - sprite_clips[3].w,
+				SCREEN_HEIGHT - sprite_clips[3].h,
+				sprite_clips + 3);
 		SDL_RenderPresent(g_renderer);
 	}
 
-	SDL_DestroyTexture(texture);
+	delete_texture(&texture);
 
 	return 0;
 }

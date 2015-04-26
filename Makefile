@@ -33,7 +33,8 @@ all: $(BIN_DIR)/haven
 
 no-gui:
 
-$(BIN_DIR)/haven: $(OBJ_DIR)/gui.o $(OBJ_DIR)/game.o $(OBJ_DIR)/main.o
+$(BIN_DIR)/haven: $(OBJ_DIR)/gui.o $(OBJ_DIR)/game.o $(OBJ_DIR)/main.o \
+	              $(OBJ_DIR)/texture.o
 	$(QUIET)$(MKDIR) $(BIN_DIR)
 	$(GCC) $(CFLAGS) $(LDLIBS) -o $@ $^
 
@@ -41,11 +42,16 @@ $(OBJ_DIR)/main.o: main.c $(INCLUDE_DIR)/gui.h $(INCLUDE_DIR)/game.h
 	$(QUIET)$(MKDIR) $(OBJ_DIR)
 	$(GCC) $(CFLAGS) -c -o $@ $<
 
-$(OBJ_DIR)/gui.o: gui.c $(INCLUDE_DIR)/gui.h
+$(OBJ_DIR)/gui.o: gui.c $(INCLUDE_DIR)/gui.h $(INCLUDE_DIR)/global.h
 	$(QUIET)$(MKDIR) $(OBJ_DIR)
 	$(GCC) $(CFLAGS) -c -o $@ $<
 
-$(OBJ_DIR)/game.o: game.c $(INCLUDE_DIR)/game.h $(INCLUDE_DIR)/gui.h
+$(OBJ_DIR)/game.o: game.c $(INCLUDE_DIR)/game.h $(INCLUDE_DIR)/gui.h \
+				   $(INCLUDE_DIR)/texture.h $(INCLUDE_DIR)/global.h
+	$(QUIET)$(MKDIR) $(OBJ_DIR)
+	$(GCC) $(CFLAGS) -c -o $@ $<
+
+$(OBJ_DIR)/texture.o: texture.c $(INCLUDE_DIR)/texture.h
 	$(QUIET)$(MKDIR) $(OBJ_DIR)
 	$(GCC) $(CFLAGS) -c -o $@ $<
 
