@@ -48,6 +48,9 @@ char load_from_file(struct texture *texture, const char *path)
 				"SDL Error: %s\n", path, SDL_GetError());
 	}
 
+	texture->width = loaded_surface->w;
+	texture->height = loaded_surface->h;
+
 	SDL_FreeSurface(loaded_surface);
 	return 1;
 }
