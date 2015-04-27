@@ -34,7 +34,8 @@ all: $(BIN_DIR)/haven
 no-gui:
 
 $(BIN_DIR)/haven: $(OBJ_DIR)/gui.o $(OBJ_DIR)/game.o $(OBJ_DIR)/main.o \
-	              $(OBJ_DIR)/texture.o $(OBJ_DIR)/tileset.o
+	              $(OBJ_DIR)/texture.o $(OBJ_DIR)/tileset.o \
+				  $(OBJ_DIR)/tile.o
 	$(QUIET)$(MKDIR) $(BIN_DIR)
 	$(GCC) $(CFLAGS) $(LDLIBS) -o $@ $^
 
@@ -60,6 +61,10 @@ $(OBJ_DIR)/tileset.o: tileset.c $(INCLUDE_DIR)/tileset.h
 	$(QUIET)$(MKDIR) $(OBJ_DIR)
 	$(GCC) $(CFLAGS) -c -o $@ $<
 
+$(OBJ_DIR)/tile.o: tile.c $(INCLUDE_DIR)/tile.h
+	$(QUIET)$(MKDIR) $(OBJ_DIR)
+	$(GCC) $(CFLAGS) -c -o $@ $<
+
 test: run_arraylist_unit_test run_entity_unit_test run_chunk_unit_test
 	$(QUIET)$(ECHO)
 
@@ -73,15 +78,6 @@ $(UNIT_TEST_OUT_DIR)/arraylist-debug: $(UNIT_TEST_DIR)/arraylist.c \
 	$(SED) -i 's/\(;\|{\|}\)/\1\n/g' $(patsubst %.c,%.i,$<)
 	$(GCC) $(DEBUG) -o $@ $(patsubst %c,%i,$<)
 
-$(UNIT_TEST_OUT_DIR)/chunk-debug: $(UNIT_TEST_DIR)/chunk.c \
-	                              $(OBJ_DIR)/entity.o $(INCLUDE_DIR)/entity.h \
-								  $(INCLUDE_DIR)/component/chunk.h
-	$(QUIET)$(MKDIR) $(UNIT_TEST_OUT_DIR)
-	$(GCC) $(CFLAGS) -E -P -o $(patsubst %.c,%.i,$<) $<
-	$(SED) -i 's/\(;\|{\|}\)/\1\n/g' $(patsubst %.c,%.i,$<)
-	$(GCC) $(DEBUG) -o $@ $(patsubst %c,%i,$<) $(OBJ_DIR)/entity.o
-	
-
 $(UNIT_TEST_OUT_DIR)/arraylist: $(UNIT_TEST_DIR)/arraylist.c \
 	                            $(INCLUDE_DIR)/arraylist.h
 	$(QUIET)$(MKDIR) $(UNIT_TEST_OUT_DIR)
@@ -90,31 +86,6 @@ $(UNIT_TEST_OUT_DIR)/arraylist: $(UNIT_TEST_DIR)/arraylist.c \
 run_arraylist_unit_test: $(UNIT_TEST_OUT_DIR)/arraylist
 	$(QUIET)$(ECHO)
 	$(QUIET)$(UNIT_TEST_OUT_DIR)/arraylist
-
-run_entity_unit_test: $(UNIT_TEST_OUT_DIR)/entity
-	$(QUIET)$(ECHO)
-	$(QUIET)$(UNIT_TEST_OUT_DIR)/entity
-
-run_chunk_unit_test: $(UNIT_TEST_OUT_DIR)/chunk
-	$(QUIET)$(ECHO)
-	$(QUIET)$(UNIT_TEST_OUT_DIR)/chunk
-
-$(UNIT_TEST_OUT_DIR)/entity: $(UNIT_TEST_DIR)/entity.c $(OBJ_DIR)/entity.o \
-	                         $(INCLUDE_DIR)/entity.h
-	$(QUIET)$(MKDIR) $(UNIT_TEST_OUT_DIR)
-	$(QUIET)$(GCC) $(CFLAGS) -o $@ $^
-
-$(OBJ_DIR)/entity.o: entity.c $(INCLUDE_DIR)/entity.h \
-	                 $(INCLUDE_DIR)/arraylist.h
-	$(QUIET)$(MKDIR) $(OBJ_DIR)
-	$(QUIET)$(GCC) $(CFLAGS) -c -o $@ $<
-
-$(UNIT_TEST_OUT_DIR)/chunk: $(UNIT_TEST_DIR)/chunk.c \
-							$(OBJ_DIR)/entity.o \
-							$(INCLUDE_DIR)/entity.h \
-	                        $(INCLUDE_DIR)/component/chunk.h
-	$(QUIET)$(MKDIR) $(UNIT_TEST_OUT_DIR)
-	$(QUIET)$(GCC) $(CFLAGS) -o $@ $^
 
 clean: clean-debug
 	$(RMR) $(BUILD_DIR)
