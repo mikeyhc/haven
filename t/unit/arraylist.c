@@ -46,7 +46,7 @@ static char arraylist_insert(void)
 		return 0;
 	}
 	printf("pass\n");
-	
+
 	printf("    checking element 1 inserted................. ");
 	if(!get_int_arraylist(&l, 0, &t)) {
 		printf("fail\n");
@@ -61,11 +61,11 @@ static char arraylist_insert(void)
 	printf("pass\n");
 
 	printf("    inserting 10 elements to test resize........ ");
-	for(i = 0; i < 10; i++) 
+	for(i = 0; i < 10; i++)
 		if(!insert_int_arraylist(&l, i)) {
 			printf("fail\n");
 			printf("failed to insert %d\n", i);
-			printf("arraylist_error: %s\n", 
+			printf("arraylist_error: %s\n",
 					get_error_int_arraylist(&l));
 			return 0;
 		}
@@ -118,11 +118,11 @@ static char arraylist_push_pop(void)
 	}
 
 	printf("    pushing items............................... ");
-	for(i = 0; i < 10; i++) 
+	for(i = 0; i < 10; i++)
 		if(!push_int_arraylist(&l, i)) {
 			printf("fail\n");
 			printf("could not push onto arraylist\n");
-			printf("arraylist error: %s\n", 
+			printf("arraylist error: %s\n",
 					get_error_int_arraylist(&l));
 			return 0;
 		}
@@ -172,7 +172,7 @@ static char arraylist_push_pop(void)
 		if(!push_int_arraylist(&l, i)) {
 			printf("fail\n");
 			printf("failed to push!\n");
-			printf("arraylist error: %s\n", 
+			printf("arraylist error: %s\n",
 					get_error_int_arraylist(&l));
 			return 0;
 		}

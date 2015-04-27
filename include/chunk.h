@@ -26,4 +26,7 @@ struct tile *get_chunk_tile(struct chunk *chunk, unsigned x, unsigned y,
 void set_chunk_tile(struct chunk *chunk, struct tile *tile, unsigned x,
 		unsigned y, unsigned z);
 
+void render_chunk(struct chunk *chunk, struct tileset *tileset, int x, int y,
+		unsigned level);
+
 #endif /* _HAVEN_CHUNK_H */

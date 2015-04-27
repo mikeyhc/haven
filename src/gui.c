@@ -47,7 +47,7 @@ char initialize_gui(void)
 				SDL_GetError());
 		return 0;
 	}
-	
+
 	g_gl_context = SDL_GL_CreateContext(g_window);
 	if(!g_gl_context) {
 		fprintf(stderr, "Could not create SDL GL Context! "

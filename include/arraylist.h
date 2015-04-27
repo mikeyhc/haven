@@ -212,6 +212,5 @@ char error_memory_error[] = "not enough memory to allocate error string";
 		*e = l->data[--l->current];				\
 		return 1;						\
 	}
-		
 
 #endif  /* _ARRAYLIST_H */

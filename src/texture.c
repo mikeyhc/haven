@@ -58,7 +58,7 @@ char load_from_file(struct texture *texture, const char *path)
 void render(struct texture *texture, int x, int y, SDL_Rect *clip)
 {
 	SDL_Rect render_quad;
-	
+
 	assert(texture);
 	assert(x >= 0 && y >= 0);
 
