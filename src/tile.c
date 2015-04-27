@@ -5,6 +5,7 @@
  */
 
 #include <tile.h>
+#include <tileset.h>
 
 void new_tile(struct tile *tile, uint8_t type, item item,
 		uint8_t o, uint8_t n, uint8_t co2, uint8_t p)
@@ -65,4 +66,9 @@ uint8_t get_tile_co2(struct tile *tile)
 uint8_t get_tile_plasma(struct tile *tile)
 {
 	return tile->gasses & PLASMA_MASK;
+}
+
+void render_tile(struct tile *tile, struct tileset *tileset, int x, int y)
+{
+	render_tileset(tileset, x, y, tile->type);
 }

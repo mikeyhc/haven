@@ -10,6 +10,7 @@
 #define _HAVEN_TILE_H
 
 #include <stdint.h>
+#include <tileset.h>
 
 typedef uint32_t gasses;
 typedef uint32_t item;
@@ -43,5 +44,7 @@ uint8_t get_tile_oxygen(struct tile *tile);
 uint8_t get_tile_nitrogen(struct tile *tile);
 uint8_t get_tile_co2(struct tile *tile);
 uint8_t get_tile_plasma(struct tile *tile);
+
+void render_tile(struct tile *tile, struct tileset *tileset, int x, int y);
 
 #endif
