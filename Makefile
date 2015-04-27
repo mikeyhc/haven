@@ -65,7 +65,7 @@ $(OBJ_DIR)/tile.o: tile.c $(INCLUDE_DIR)/tile.h
 	$(QUIET)$(MKDIR) $(OBJ_DIR)
 	$(GCC) $(CFLAGS) -c -o $@ $<
 
-test: run_arraylist_unit_test run_entity_unit_test run_chunk_unit_test
+test: run_arraylist_unit_test
 	$(QUIET)$(ECHO)
 
 test-debug-files: $(UNIT_TEST_OUT_DIR)/arraylist-debug \
