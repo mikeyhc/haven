@@ -36,7 +36,7 @@ $(BIN_DIR)/haven: $(OBJ_DIR)/gui.o $(OBJ_DIR)/game.o $(OBJ_DIR)/main.o \
 	              $(OBJ_DIR)/texture.o $(OBJ_DIR)/tileset.o \
 				  $(OBJ_DIR)/tile.o $(OBJ_DIR)/chunk.o
 	$(QUIET)$(MKDIR) $(BIN_DIR)
-	$(GCC) $(CFLAGS) $(LDLIBS) -o $@ $^
+	$(GCC) $(CFLAGS) -o $@ $^ $(LDLIBS)
 
 $(OBJ_DIR)/main.o: main.c $(INCLUDE_DIR)/gui.h $(INCLUDE_DIR)/game.h
 	$(QUIET)$(MKDIR) $(OBJ_DIR)
