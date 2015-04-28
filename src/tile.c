@@ -50,22 +50,22 @@ void set_tile_plasma(struct tile *tile, uint8_t p)
 
 uint8_t get_tile_oxygen(struct tile *tile)
 {
-	return tile->gasses & OXYGEN_MASK;
+	return tile->gasses & OXYGEN_MASK >> OXYGEN_OFFSET;
 }
 
 uint8_t get_tile_nitrogen(struct tile *tile)
 {
-	return tile->gasses & NITROGEN_MASK;
+	return tile->gasses & NITROGEN_MASK >> NITROGEN_OFFSET;
 }
 
 uint8_t get_tile_co2(struct tile *tile)
 {
-	return tile->gasses & CO2_MASK;
+	return tile->gasses & CO2_MASK >> CO2_OFFSET;
 }
 
 uint8_t get_tile_plasma(struct tile *tile)
 {
-	return tile->gasses & PLASMA_MASK;
+	return tile->gasses & PLASMA_MASK >> PLASMA_OFFSET;
 }
 
 void render_tile(struct tile *tile, struct tileset *tileset, int x, int y)

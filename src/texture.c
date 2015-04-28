@@ -60,7 +60,6 @@ void render(struct texture *texture, int x, int y, SDL_Rect *clip)
 	SDL_Rect render_quad;
 
 	assert(texture);
-	assert(x >= 0 && y >= 0);
 
 	render_quad.x = x;
 	render_quad.y = y;
@@ -72,6 +71,10 @@ void render(struct texture *texture, int x, int y, SDL_Rect *clip)
 		render_quad.w = texture->width;
 		render_quad.h = texture->height;
 	}
+
+	if(render_quad.x + render_quad.w < 0 ||
+			render_quad.y + render_quad.h < 0)
+		return;
 
 	SDL_RenderCopy(g_renderer, texture->texture, clip, &render_quad);
 }

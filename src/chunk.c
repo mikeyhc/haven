@@ -49,12 +49,18 @@ void set_chunk_tile(struct chunk *chunk, struct tile *tile, unsigned x,
 void render_chunk(struct chunk *chunk, struct tileset *tileset, int sx, int sy,
 		unsigned level)
 {
-	unsigned x, z;
+	unsigned x, z, h;
+	int offset;
 
 	assert(chunk && tileset);
 
+	h = tileset->height * 0.4;
 	for(z = 0; z < CHUNK_Z; z++)
-		for(x = 0; x < CHUNK_X; x++)
+		for(x = 0; x < CHUNK_X; x++) {
+			offset = sx - z * (tileset->width / 2);
 			render_tile(get_chunk_tile(chunk, x, level, z),
-					tileset, sx, sy + z * tileset->height);
+					tileset,
+					offset + tileset->width * x,
+					sy + z * h);
+		}
 }
