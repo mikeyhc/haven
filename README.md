@@ -5,5 +5,4 @@ Requirements
 ------------
 - SDL2
 - SDL2\_image
-- GLEW
 - OpenGL 2+
