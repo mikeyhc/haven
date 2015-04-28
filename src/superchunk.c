@@ -7,9 +7,12 @@
 #include <string.h>
 #include <superchunk.h>
 
+static unsigned uid_count = 1;
+
 void new_superchunk(struct superchunk *chunk)
 {
-	memset(chunk, 0, sizeof(struct superchunk));
+	memset(&chunk->chunks, 0, sizeof(chunk->chunks));
+	chunk->uid = uid_count++;
 }
 
 void delete_superchunk(struct superchunk *chunk)

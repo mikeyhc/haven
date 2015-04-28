@@ -14,6 +14,7 @@
 #define SCHUNK_Z 16
 
 struct superchunk {
+	unsigned uid;
 	struct chunk *chunks[SCHUNK_X * SCHUNK_Y * SCHUNK_Z];
 };
 
