@@ -25,8 +25,9 @@ UNIT_TEST_OUT_DIR := $(BUILD_DIR)/$(UNIT_TEST_DIR)
 VPATH             := $(SRC_DIR)
 
 DEBUG  := -g
-CFLAGS := -I$(INCLUDE_DIR) $(DEBUG) -Wall -Wextra -pedantic -I/usr/include/SDL2
-LDLIBS := -L/usr/lib64/SDL2 -lSDL2 -lSDL2_image -lGL
+CFLAGS := -I$(INCLUDE_DIR) $(DEBUG) -Wall -Wextra -pedantic \
+	      $(shell pkg-config --cflags sdl2 SDL2_image gl)
+LDLIBS := $(shell pkg-config --libs sdl2 SDL2_image gl)
 QUIET  ?= @
 
 all: $(BIN_DIR)/haven
