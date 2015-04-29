@@ -16,7 +16,7 @@
 
 /* per tile offset */
 #define MAGIC_X 0
-// #define MAGIC_Y -3
+/* #define MAGIC_Y -3 */
 #define MAGIC_Y 0
 
 #define TILE_EDGE_HEIGHT 0.4

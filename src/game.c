@@ -25,7 +25,10 @@ int main_loop(void)
 	struct tile tile;
 
 	if(!new_tileset_from_file(&tileset, "images/tileset.png",
-				5, 15, 64, 50)) {
+				TILE_TOP_OFFSET,
+				TILE_OFFSET,
+				TILE_WIDTH,
+				TILE_HEIGHT)) {
 		fprintf(stderr, "failed to load texure image\n");
 		return 1;
 	}
