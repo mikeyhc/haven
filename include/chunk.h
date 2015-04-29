@@ -14,6 +14,13 @@
 #define CHUNK_Y 16
 #define CHUNK_Z 16
 
+/* per tile offset */
+#define MAGIC_X 0
+// #define MAGIC_Y -3
+#define MAGIC_Y 0
+
+#define TILE_EDGE_HEIGHT 0.4
+
 struct chunk {
 	struct tile tiles[CHUNK_X * CHUNK_Y * CHUNK_Z];
 };
@@ -28,5 +35,8 @@ void set_chunk_tile(struct chunk *chunk, struct tile *tile, unsigned x,
 
 void render_chunk(struct chunk *chunk, struct tileset *tileset, int x, int y,
 		unsigned level);
+
+unsigned chunk_height(struct tileset *tileset);
+unsigned chunk_width(struct tileset *tileset);
 
 #endif /* _HAVEN_CHUNK_H */

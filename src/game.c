@@ -39,12 +39,15 @@ int main_loop(void)
 	delete_tile(&tile);
 
 
-	SDL_SetRenderDrawColor(g_renderer, 0x00, 0x00, 0x00, 0xFF);
 	quit = 0;
+
+	printf(" height: %u\n", chunk_height(&tileset));
+	printf("  width: %u\n", chunk_width(&tileset));
 	while(!quit) {
 		while(SDL_PollEvent(&e))
 			if(e.type == SDL_QUIT) quit = 1;
 
+		SDL_SetRenderDrawColor(g_renderer, 0x00, 0x00, 0x00, 0xFF);
 		SDL_RenderClear(g_renderer);
 		render_chunk(&chunk, &tileset, 100, 100, 0);
 		SDL_RenderPresent(g_renderer);
