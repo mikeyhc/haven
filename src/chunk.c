@@ -6,7 +6,10 @@
 
 #include <assert.h>
 #include <chunk.h>
+#include <SDL.h>
 #include <string.h>
+
+extern SDL_Renderer *g_renderer;
 
 void new_chunk(struct chunk *chunk)
 {
@@ -62,15 +65,40 @@ void render_chunk(struct chunk *chunk, struct tileset *tileset, int sx, int sy,
 					offset + tileset->width * x,
 					sy + z * h + z * MAGIC_Y);
 		}
+	SDL_SetRenderDrawColor(g_renderer, 0xFF, 0xFF, 0x00, 0xFF);
+	SDL_RenderDrawLine(g_renderer,
+			sx + tileset->width / 2,
+			sy,
+			sx + chunk_width(tileset) + tileset->width /2,
+			sy);
+	SDL_RenderDrawLine(g_renderer,
+			sx + tileset->width / 2,
+			sy,
+			sx - chunk_width(tileset) / 2 + tileset->width * 0.6,
+			sy + chunk_height(tileset));
+	SDL_RenderDrawLine(g_renderer,
+			sx - chunk_width(tileset) / 2 + tileset->width * 0.6,
+			sy + chunk_height(tileset),
+			sx + chunk_width(tileset) / 2 + tileset->width * 0.6,
+			sy + chunk_height(tileset));
+	SDL_RenderDrawLine(g_renderer,
+			sx + chunk_width(tileset) + tileset->width / 2,
+			sy,
+			sx + chunk_width(tileset) / 2 + tileset->width * 0.6,
+			sy + chunk_height(tileset));
 }
 
 unsigned chunk_height(struct tileset *tileset)
 {
-	return (CHUNK_Z - 1) * tileset->height * TILE_EDGE_HEIGHT
-		+ CHUNK_Z * MAGIC_Y + tileset->height;
+	assert(tileset);
+
+	return CHUNK_Z * tileset->height * TILE_EDGE_HEIGHT
+		+ CHUNK_Z * MAGIC_Y;
 }
 
 unsigned chunk_width(struct tileset *tileset)
 {
+	assert(tileset);
+
 	return CHUNK_Z * MAGIC_X + tileset->width * CHUNK_X;
 }

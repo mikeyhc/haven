@@ -8,8 +8,8 @@
 #define _HAVEN_GLOBAL_H
 
 #define PROGRAM_NAME  "Haven Game"
-#define SCREEN_WIDTH  640
-#define SCREEN_HEIGHT 480
+#define SCREEN_WIDTH  1800
+#define SCREEN_HEIGHT 1024
 
 #define TILE_TOP_OFFSET 5
 #define TILE_OFFSET     15

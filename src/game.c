@@ -52,7 +52,7 @@ int main_loop(void)
 
 		SDL_SetRenderDrawColor(g_renderer, 0x00, 0x00, 0x00, 0xFF);
 		SDL_RenderClear(g_renderer);
-		render_chunk(&chunk, &tileset, 100, 100, 0);
+		render_chunk(&chunk, &tileset, 525, 100, 0);
 		SDL_RenderPresent(g_renderer);
 	}
 
