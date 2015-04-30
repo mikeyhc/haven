@@ -48,7 +48,15 @@ int main_loop(void)
 	printf("  width: %u\n", chunk_width(&tileset));
 	while(!quit) {
 		while(SDL_PollEvent(&e))
-			if(e.type == SDL_QUIT) quit = 1;
+			switch(e.type) {
+				case SDL_QUIT:
+					quit = 1;
+					break;
+				case SDL_KEYDOWN:
+					if(e.key.keysym.sym == SDLK_q)
+						quit = 1;
+					break;
+			}
 
 		SDL_SetRenderDrawColor(g_renderer, 0x00, 0x00, 0x00, 0xFF);
 		SDL_RenderClear(g_renderer);
