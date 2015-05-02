@@ -27,7 +27,7 @@ VPATH             := $(SRC_DIR)
 DEBUG  := -g
 CFLAGS := -I$(INCLUDE_DIR) $(DEBUG) -Wall -Wextra -pedantic \
 	      $(shell pkg-config --cflags sdl2 SDL2_image gl)
-LDLIBS := $(shell pkg-config --libs sdl2 SDL2_image gl)
+LDLIBS := $(shell pkg-config --libs sdl2 SDL2_image gl) -lm
 QUIET  ?= @
 
 all: $(BIN_DIR)/haven

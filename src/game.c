@@ -44,8 +44,6 @@ int main_loop(void)
 
 	quit = 0;
 
-	printf(" height: %u\n", chunk_height(&tileset));
-	printf("  width: %u\n", chunk_width(&tileset));
 	while(!quit) {
 		while(SDL_PollEvent(&e))
 			switch(e.type) {
@@ -60,7 +58,9 @@ int main_loop(void)
 
 		SDL_SetRenderDrawColor(g_renderer, 0x00, 0x00, 0x00, 0xFF);
 		SDL_RenderClear(g_renderer);
-		render_chunk(&chunk, &tileset, 525, 100, 0);
+		render_chunk(&chunk, &tileset,
+				(SCREEN_WIDTH - tileset.height) / 2,
+				50, 0);
 		SDL_RenderPresent(g_renderer);
 	}
 

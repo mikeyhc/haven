@@ -76,7 +76,7 @@ void render(struct texture *texture, int x, int y, SDL_Rect *clip)
 			render_quad.y + render_quad.h < 0)
 		return;
 
-	SDL_SetRenderDrawColor(g_renderer, 0x00, 0x00, 0xFF, 0xFF);
+	/* SDL_SetRenderDrawColor(g_renderer, 0x00, 0x00, 0xFF, 0xFF);
 	SDL_RenderDrawLine(g_renderer,
 			x,
 			y + render_quad.h * 0.4,
@@ -101,26 +101,26 @@ void render(struct texture *texture, int x, int y, SDL_Rect *clip)
 			x + render_quad.w / 2,
 			y + render_quad.h * 1.4,
 			x + render_quad.w /2,
-			y + render_quad.h * 0.8);
-	SDL_RenderCopy(g_renderer, texture->texture, clip, &render_quad);
+			y + render_quad.h * 0.8); */
+	/* SDL_RenderCopy(g_renderer, texture->texture, clip, &render_quad); */
 	SDL_SetRenderDrawColor(g_renderer, 0xFF, 0x00, 0x00, 0xFF);
 	SDL_RenderDrawLine(g_renderer,
 			x,
-			y + render_quad.h  * 0.4,
+			y + render_quad.h  / 2,
 			x + render_quad.w / 2, y);
 	SDL_RenderDrawLine(g_renderer,
 			x + render_quad.w / 2,
 			y,
 			x + render_quad.w,
-			y + render_quad.h * 0.4);
+			y + render_quad.h / 2);
 	SDL_RenderDrawLine(g_renderer,
 			x + render_quad.w,
-			y + render_quad.h * 0.4,
+			y + render_quad.h / 2,
 			x + render_quad.w / 2,
-			y + render_quad.h * 0.8);
+			y + render_quad.h);
 	SDL_RenderDrawLine(g_renderer,
 			x + render_quad.w / 2,
-			y + render_quad.h * 0.8,
+			y + render_quad.h,
 			x,
-			y + render_quad.h * 0.4);
+			y + render_quad.h / 2);
 }
