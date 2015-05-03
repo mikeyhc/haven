@@ -80,7 +80,7 @@ void render_chunk(struct chunk *chunk, struct tileset *tileset, int sx, int sy,
 		}
 	}
 
-	bounds = chunk_bounds(sx, sy, tileset);
+	bounds = chunk_bounds(tileset, sx, sy);
 	SDL_SetRenderDrawColor(g_renderer, 0x00, 0xFF, 0x00, 0xFF);
 	SDL_RenderDrawLine(g_renderer, bounds.top.x, bounds.top.y,
 			bounds.bottom.x, bounds.bottom.y);
@@ -96,7 +96,7 @@ void render_chunk(struct chunk *chunk, struct tileset *tileset, int sx, int sy,
 	SDL_RenderDrawLines(g_renderer, point_list, 5);
 }
 
-struct chunk_bounds chunk_bounds(int x, int y, struct tileset *tileset)
+struct chunk_bounds chunk_bounds(struct tileset *tileset, int x, int y)
 {
 	struct chunk_bounds bounds;
 

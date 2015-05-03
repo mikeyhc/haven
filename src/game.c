@@ -23,6 +23,7 @@ int main_loop(void)
 	struct tileset tileset;
 	struct chunk chunk;
 	struct tile tile;
+	struct chunk_bounds bounds;
 
 	if(!new_tileset_from_file(&tileset, "images/tileset.png",
 				TILE_TOP_OFFSET,
@@ -42,6 +43,8 @@ int main_loop(void)
 	delete_tile(&tile);
 
 
+	bounds = chunk_bounds(&tileset, 50, 0);
+
 	quit = 0;
 
 	while(!quit) {
@@ -59,8 +62,25 @@ int main_loop(void)
 		SDL_SetRenderDrawColor(g_renderer, 0x00, 0x00, 0x00, 0xFF);
 		SDL_RenderClear(g_renderer);
 		render_chunk(&chunk, &tileset,
-				(SCREEN_WIDTH - tileset.height) / 2,
+				(SCREEN_WIDTH - tileset.width) / 2,
 				50, 0);
+		render_chunk(&chunk, &tileset,
+				(SCREEN_WIDTH - tileset.width) / 2
+				- (bounds.right.x - bounds.left.x),
+				50, 0);
+		render_chunk(&chunk, &tileset,
+				(SCREEN_WIDTH - tileset.width) / 2
+				+ (bounds.right.x - bounds.left.x),
+				50, 0);
+		render_chunk(&chunk, &tileset,
+				(SCREEN_WIDTH - tileset.width) / 2
+				- (bounds.top.x - bounds.left.x),
+				50 - (bounds.bottom.y - bounds.left.y), 0);
+		render_chunk(&chunk, &tileset,
+				(SCREEN_WIDTH - tileset.width) / 2
+				+ (bounds.top.x - bounds.left.x),
+				50 - (bounds.bottom.y - bounds.left.y), 0);
+
 		SDL_RenderPresent(g_renderer);
 	}
 

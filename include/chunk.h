@@ -33,6 +33,6 @@ void set_chunk_tile(struct chunk *chunk, struct tile *tile, unsigned x,
 void render_chunk(struct chunk *chunk, struct tileset *tileset, int x, int y,
 		unsigned level);
 
-struct chunk_bounds chunk_bounds(int x, int y, struct tileset *tileset);
+struct chunk_bounds chunk_bounds(struct tileset *tileset, int x, int y);
 
 #endif /* _HAVEN_CHUNK_H */
